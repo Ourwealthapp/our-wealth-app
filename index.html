@@ -1,0 +1,212 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>OUR WEALTH APP | Family Financial Literacy</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#00E676">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Our Wealth App">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg: #0A0A0C;
+            --surface: #13131A;
+            --surface-card: #1C1C24;
+            --accent: #00E676;
+            --accent-glow: rgba(0, 230, 118, 0.15);
+            --text: #FFFFFF;
+            --text-muted: #8E8E9F;
+            --border: #262633;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg); color: var(--text); padding: 20px 16px 60px 16px; display: flex; justify-content: center; min-height: 100vh; }
+        .container { max-width: 800px; width: 100%; display: flex; flex-direction: column; gap: 20px; }
+        .app-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 16px; }
+        .logo { font-weight: 800; font-size: 1.5rem; letter-spacing: -0.5px; }
+        .logo span { color: var(--accent); }
+        .ai-status { background: var(--accent-glow); color: var(--accent); border: 1px solid rgba(0,230,118,0.3); padding: 6px 14px; border-radius: 50px; font-size: 0.8rem; font-weight: 700; }
+        
+        .pwa-banner { background: #1C1C24; border: 1px solid rgba(0,230,118,0.3); border-radius: 12px; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; }
+        .btn-install { background: var(--accent); color: #000; font-weight: 800; border: none; padding: 8px 16px; border-radius: 8px; font-size: 0.85rem; cursor: pointer; }
+        
+        .switcher-bar { display: flex; background: var(--surface); border: 1px solid var(--border); padding: 6px; border-radius: 12px; gap: 8px; }
+        .tier-btn { flex: 1; background: transparent; border: none; color: var(--text-muted); padding: 10px; border-radius: 8px; font-weight: 700; cursor: pointer; transition: all 0.2s; font-size: 0.85rem; text-align: center; }
+        .tier-btn.active { background: var(--surface-card); color: var(--text); border: 1px solid var(--border); box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        
+        .workspace { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 24px; display: none; }
+        .workspace.active { display: block; }
+        h2 { font-size: 1.35rem; margin-bottom: 8px; }
+        .desc { color: var(--text-muted); margin-bottom: 20px; font-size: 0.9rem; line-height: 1.4; }
+        
+        .interactive-box { background: var(--surface-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 18px; }
+        .btn-action { width: 100%; background: var(--accent); color: #000; font-weight: 800; border: none; padding: 14px; border-radius: 10px; cursor: pointer; font-size: 0.95rem; }
+        .ai-terminal { background: #000; border: 1px solid var(--border); border-radius: 10px; padding: 18px; font-family: monospace; color: #CDCDDF; font-size: 0.85rem; line-height: 1.5; white-space: pre-line; min-height: 110px; }
+        .ai-loading { color: var(--accent); animation: pulse 1.2s infinite; }
+        
+        .score-display { font-size: 1.8rem; font-weight: 800; color: var(--accent); margin-bottom: 8px; }
+        input[type="range"] { width: 100%; accent-color: var(--accent); height: 8px; }
+        select { width: 100%; background: var(--bg); border: 1px solid var(--border); color: var(--text); padding: 12px; border-radius: 8px; font-size: 0.95rem; margin-bottom: 16px; }
+        
+        @keyframes pulse { 0% { opacity: 0.4; } 50% { opacity: 1; } 100% { opacity: 0.4; } }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header class="app-header">
+        <div class="logo">OUR<span>WEALTH APP</span></div>
+        <div class="ai-status">⚡ PWA Standalone Ready</div>
+    </header>
+
+    <div class="pwa-banner">
+        <div>
+            <strong style="color: #FFF; font-size: 0.9rem; display: block;">Install Our Wealth App</strong>
+            <span style="color: #8E8E9F; font-size: 0.78rem;">Add to home screen for fullscreen mobile access ($0 app store fees).</span>
+        </div>
+        <button class="btn-install" onclick="triggerPWAInstall()">Install</button>
+    </div>
+
+    <div class="switcher-bar">
+        <button class="tier-btn active" onclick="switchTier('prek', this)">👶 Pre-K Story</button>
+        <button class="tier-btn" onclick="switchTier('teen', this)">🎓 Teen Credit</button>
+        <button class="tier-btn" onclick="switchTier('adult', this)">🏦 Adult Trust</button>
+    </div>
+
+    <!-- PRE-K -->
+    <div id="prek" class="workspace active">
+        <h2>AI Generative Comic & Token Engine</h2>
+        <p class="desc">Interactive educational story loops featuring Malik the Squirrel teaching delayed gratification.</p>
+        <div class="interactive-box">
+            <label style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 6px;">Select Cultural Environment:</label>
+            <select id="prek-context">
+                <option value="City Blocks & Public Parks">City Blocks & Public Parks (Metropolitan Theme)</option>
+                <option value="Suburban Subdivisions & Local Corner Stores">Suburban Subdivisions & Local Corner Stores</option>
+                <option value="Agricultural Farms & Natural Forest Outposts">Agricultural Farms & Natural Forest Outposts</option>
+            </select>
+            <button class="btn-action" onclick="generatePreKStory()">Run AI Script Generator</button>
+        </div>
+        <div id="prek-terminal" class="ai-terminal">👉 Select an environment background and tap generate to begin.</div>
+    </div>
+
+    <!-- TEEN -->
+    <div id="teen" class="workspace">
+        <h2>Real-Time AI Interest Engine Simulator</h2>
+        <p class="desc">Simulates how your credit matrix affects auto loans and micro-investing power.</p>
+        <div class="interactive-box">
+            <div class="score-display"><span id="score-val">620</span> Credit Score</div>
+            <input type="range" id="credit-slider" min="580" max="820" value="620" oninput="calculateTeenAI(this.value)">
+        </div>
+        <div id="teen-terminal" class="ai-terminal">
+            🔴 CURRENT SIMULATION ANALYSIS:
+            • Auto Loan Interest Rate (APR): 18.2%
+            • Monthly Cost on $20,000 Loan: $492 / month
+            • AI Assessment: Subprime high-interest zone. Action: automate on-time phone payments and keep card utilization below 10%.
+        </div>
+    </div>
+
+    <!-- ADULT -->
+    <div id="adult" class="workspace">
+        <h2>AI Document Audit Simulator</h2>
+        <p class="desc">Simulates OCR audits identifying hidden line-item leakages to channel into Family Living Trusts.</p>
+        <div class="interactive-box">
+            <label style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 6px;">Select Statement Source:</label>
+            <select id="adult-doc">
+                <option value="Car Insurance">Predatory Car Insurance Policy Quote ($340/mo)</option>
+                <option value="Cable">Overpriced Cable/Internet Bundled Contract ($185/mo)</option>
+            </select>
+            <button class="btn-action" onclick="auditDocumentAI()">Upload & Extract Leakages</button>
+        </div>
+        <div id="adult-terminal" class="ai-terminal">👉 Choose an asset document statement above to begin.</div>
+    </div>
+</div>
+
+<script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('sw.js').catch(() => {});
+        });
+    }
+
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+    });
+
+    function triggerPWAInstall() {
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            deferredPrompt.userChoice.then(() => {
+                deferredPrompt = null;
+            });
+        } else {
+            alert('To install on iPhone/iPad: Tap the Share button in Safari and select "Add to Home Screen".\n\nOn Android Chrome: Tap the three dots (⋮) menu and tap "Install app" or "Add to Home screen".');
+        }
+    }
+
+    function switchTier(tierId, btn) {
+        document.querySelectorAll('.workspace').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.tier-btn').forEach(el => el.classList.remove('active'));
+        document.getElementById(tierId).classList.add('active');
+        btn.classList.add('active');
+    }
+
+    function generatePreKStory() {
+        const terminal = document.getElementById('prek-terminal');
+        const context = document.getElementById('prek-context').value;
+        terminal.innerHTML = "<span class='ai-loading'>✨ Engine active... AI processing custom localized vector environments...</span>";
+        setTimeout(() => {
+            terminal.innerHTML = "🤖 <b>AI CONTENT ENGINE GENERATION SUCCESSFUL:</b>\n\n" +
+            "<b>[Visual Blueprint Setup]:</b> Set map backgrounds to <u>" + context + "</u>. Animate Malik the Squirrel wearing culturally normal apparel.\n\n" +
+            "<b>[Generated Dialogue Prompt Script]:</b> \"Hey sibling! Welcome to our local neighborhood. Today, we have 5 block tokens. If we spend them all at once on that neon candy box right here, our tokens disappear. But if we pool our tokens together, we can buy the local community garden tools tomorrow. Let's make a solid team move! Click the green chest to deposit your token safely!\"";
+        }, 1100);
+    }
+
+    function calculateTeenAI(val) {
+        document.getElementById('score-val').innerText = val;
+        const terminal = document.getElementById('teen-terminal');
+        let apr = (18.2 - ((val - 580) * 0.058)).toFixed(1);
+        if (apr < 4.2) apr = 4.2;
+        let monthly = Math.round(492 - ((val - 580) * 0.65));
+        if (monthly < 340) monthly = 340;
+        let report = "🟢 <b>OPTIMIZED AI INSIGHT MATRIX (" + val + " SCORE):</b>\n" +
+            "• Auto Loan Interest Rate (APR): " + apr + "%\n" +
+            "• Monthly Cost on $20,000 Loan: $" + monthly + " / month\n\n";
+        if (val < 650) {
+            report += "⚠️ <b>AI Assessment:</b> High-interest trap zone. Action Plan: Link a mock cell phone plan to your profile, complete 3 quiz loops to watch your simulated rating rise.";
+        } else if (val < 740) {
+            report += "⚡ <b>AI Assessment:</b> Moderate ground. You are saving roughly $" + (492 - monthly) + " monthly compared to base score profile. This system redirects this money into your fractional micro-investing account.";
+        } else {
+            report += "🏆 <b>AI Assessment:</b> Elite status. You have completely unlocked prime tier rates. The banking industry can no longer extract unearned margins from your household.";
+        }
+        terminal.innerHTML = report;
+    }
+
+    function auditDocumentAI() {
+        const terminal = document.getElementById('adult-terminal');
+        const docType = document.getElementById('adult-doc').value;
+        terminal.innerHTML = "<span class='ai-loading'>🕵️‍♂️ Running OCR validation... Running structural anomaly detection layers...</span>";
+        setTimeout(() => {
+            if(docType.includes("Insurance")) {
+                terminal.innerHTML = "📋 <b>AI AUDIT INSIGHT REPORT:</b>\n\n" +
+                "• <b>Anomalies Detected:</b> Hidden structural administrative line-item charges and redundant collision limits found.\n" +
+                "• <b>Extracted Financial Leakage:</b> $112 / month found over market baselines.\n\n" +
+                "💡 <b>AI Auto-Execution:</b> Generating custom cancellation scripts. Open the Trust configuration module to securely route this $112 monthly saving into an automated index fund that funds your family's Revocable Living Trust.";
+            } else {
+                terminal.innerHTML = "📋 <b>AI AUDIT INSIGHT REPORT:</b>\n\n" +
+                "• <b>Anomalies Detected:</b> Unused dynamic tech premium device rental fees detected over a 24-month contract span.\n" +
+                "• <b>Extracted Financial Leakage:</b> $45 / month saved.\n\n" +
+                "💡 <b>AI Auto-Execution:</b> Drafted automated script ready to send to your internet service provider to negotiate your rate down.";
+            }
+        }, 1100);
+    }
+</script>
+</body>
+</html>
